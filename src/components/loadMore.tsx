@@ -1,22 +1,54 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import Movie from "@/lib/movie";
 import { Spinner } from "./ui/spinner";
 import { fetchMovies } from "@/actions/fetch-movies";
 import Link from "next/link";
 import { Photo } from "./photo";
-import { RootState } from "@/app/redux/store"; 
+import { RootState } from "@/app/redux/store";
+import { useSelector } from "react-redux";
 import { SearchComponent } from "@/components/search";
-import { useSelector, Provider } from "react-redux";
-import { store } from "@/app/redux/store";
+import { memo } from "react";
+
+// Memoized MovieLink component
+const MovieLink = memo(function MovieLink({
+  priority,
+  movie,
+  ref,
+}: {
+  priority: boolean;
+  movie: Movie;
+  ref?: any;
+}) {
+  return (
+    <div className="relative" ref={ref}>
+      <Link
+        href={`/`}
+        key={Math.random()} //  key should be unique and index won't be used.
+        className="block transition ease-in-out md:hover:scale-105"
+        prefetch={false}
+      >
+        <Photo
+          src={movie.posterimage!}
+          title={movie.name}
+          priority={priority}
+        />
+        <span className="absolute bottom-0 left-0 p-2 text-sm font-semibold"></span>
+      </Link>
+      <div className="p-2">
+        {movie.name.length > 12 ? `${movie.name.slice(0, 12)}...` : movie.name}
+      </div>
+    </div>
+  );
+});
 
 export function LoadMore({ initialMovies }: { initialMovies: Movie[] | null }) {
   const [movies, setMovies] = useState<Movie[] | null>(initialMovies || []);
   const [pagesLoaded, setPagesLoaded] = useState(1);
   const searchTerm = useSelector(
     (state: RootState) => state.search.searchTerm
-  ); //  search term from Redux store.Comments by Akshay G Nambiar
+  ); // Get search term from Redux store
 
   const { ref, inView } = useInView();
 
@@ -41,18 +73,20 @@ export function LoadMore({ initialMovies }: { initialMovies: Movie[] | null }) {
     }
   }, [inView]);
 
-  // Filter movies based on the search term from Redux
-  const filteredMovies = movies?.filter((movie) =>
-    movie.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // Memoized filtering to avoid recomputation unless movies or searchTerm changes
+  const filteredMovies = useMemo(
+    () =>
+      movies?.filter((movie) =>
+        movie.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [movies, searchTerm]
   );
 
   return (
-    <Provider store={store}>
-      <div className="flex flex-col h-full">
+    
+      <div className="w-full flex flex-col h-full">
         {/* SearchComponent for searching movies */}
-        <div className="container mx-auto p-4 -ml-4"> 
-          <SearchComponent />
-        </div>
+        
 
         {/* Movies grid */}
         <div className="container mx-auto grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 mt-3">
@@ -66,52 +100,21 @@ export function LoadMore({ initialMovies }: { initialMovies: Movie[] | null }) {
 
               return (
                 <MovieLink
-                  key={Math.random()}
+                  key={Math.random()} // use unique key
                   priority={index < 10}
                   movie={film}
-                  ref={isLastElement &&pagesLoaded<4? ref : null} // ref 
+                  ref={isLastElement && pagesLoaded < 4 ? ref : null} // ref
                 />
               );
             })
           )}
         </div>
 
-        {/* spinner  called here for pagination*/}
+        {/* Spinner for pagination */}
         <div ref={ref}>
-        <Spinner />
+          <Spinner />
         </div>
       </div>
-    </Provider>
+    
   );
 }
-
-const MovieLink = ({
-  priority,
-  movie,
-  ref,
-}: {
-  priority: boolean;
-  movie: Movie;
-  ref?: any;
-}) => {
-  return (
-    <div className="relative" ref={ref}>
-      <Link
-        href={`/`}
-        key={Math.random()}
-        className="block transition ease-in-out md:hover:scale-105"
-        prefetch={false}
-      >
-        <Photo
-          src={movie.posterimage!}
-          title={movie.name}
-          priority={priority}
-        />
-        <span className="absolute bottom-0 left-0 p-2 text-sm font-semibold"></span>
-      </Link>
-       <div className = "mt-2" >
-      {movie.name.length > 12 ? `${movie.name.slice(0,12)}...` : movie.name}
-      </div>
-    </div>
-  );
-};
