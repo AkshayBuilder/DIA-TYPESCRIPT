@@ -78,7 +78,7 @@ export function LoadMore({ initialMovies }: { initialMovies: Movie[] | null }) {
 
         {/* spinner  called here for pagination*/}
         <div ref={ref}>
-        <Spinner pageNumber={pagesLoaded} />
+        <Spinner />
         </div>
       </div>
     </Provider>
