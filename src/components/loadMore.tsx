@@ -109,7 +109,7 @@ const MovieLink = ({
         />
         <span className="absolute bottom-0 left-0 p-2 text-sm font-semibold"></span>
       </Link>
-       <div className="p-1">
+       <div >
       {movie.name.length > 12 ? `${movie.name.slice(0,12)}...` : movie.name}
       </div>
     </div>
