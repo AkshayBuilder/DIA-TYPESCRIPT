@@ -31,10 +31,7 @@ const MovieLink = memo(function MovieLink({
       >
         <Photo src={movie.posterimage!} title={movie.name} priority={priority} />
       </Link>
-      <div className="absolute bottom-0 left-0 w-full text-sm font-semibold mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
-        {/* Ensure the text stays on one line, truncating if too long .In the question a edge case given for page3.i gave 12 character limit */}
-        {movie.name.length > 12 ? `${movie.name.slice(0, 12)}...` : movie.name}
-      </div>
+     
     </div>
   );
 });
@@ -102,6 +99,10 @@ export function LoadMore({ initialMovies }: { initialMovies: Movie[] | null }) {
                   movie={film}
                   ref={isLastElement && pagesLoaded < 4 ? ref : null} // ref
                 />
+                 <div className="absolute bottom-0 left-0 w-full text-sm font-semibold mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
+                   {/* Ensure the text stays on one line, truncating if too long .In the question a edge case given for page3.i gave 12 character limit */}
+                   {movie.name.length > 12 ? `${movie.name.slice(0, 12)}...` : movie.name}
+                 </div>
               );
             })
           )}
