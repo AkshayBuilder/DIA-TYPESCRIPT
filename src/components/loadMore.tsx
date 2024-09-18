@@ -25,17 +25,23 @@ const MovieLink = memo(function MovieLink({
     <div className="relative" ref={ref}>
       <Link
         href={`/`}
-        key={Math.random()} // key should be unique
+        key={Math.random()} //  key should be unique and index won't be used.
         className="block transition ease-in-out md:hover:scale-105"
         prefetch={false}
       >
-        <Photo src={movie.posterimage!} title={movie.name} priority={priority} />
+        <Photo
+          src={movie.posterimage!}
+          title={movie.name}
+          priority={priority}
+        />
+        <span className="absolute bottom-0 left-0 p-2 text-sm font-semibold"></span>
       </Link>
-     
+      <div className="p-2">
+        {movie.name.length > 12 ? `${movie.name.slice(0, 12)}...` : movie.name}
+      </div>
     </div>
   );
 });
-
 
 export function LoadMore({ initialMovies }: { initialMovies: Movie[] | null }) {
   const [movies, setMovies] = useState<Movie[] | null>(initialMovies || []);
@@ -99,10 +105,6 @@ export function LoadMore({ initialMovies }: { initialMovies: Movie[] | null }) {
                   movie={film}
                   ref={isLastElement && pagesLoaded < 4 ? ref : null} // ref
                 />
-                 <div className="absolute bottom-0 left-0 w-full text-sm font-semibold mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
-                   {/* Ensure the text stays on one line, truncating if too long .In the question a edge case given for page3.i gave 12 character limit */}
-                   {movie.name.length > 12 ? `${movie.name.slice(0, 12)}...` : movie.name}
-                 </div>
               );
             })
           )}
