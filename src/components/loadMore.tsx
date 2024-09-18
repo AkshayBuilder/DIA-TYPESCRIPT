@@ -36,7 +36,7 @@ const MovieLink = memo(function MovieLink({
         />
         <span className="absolute bottom-0 left-0 p-2 text-sm font-semibold"></span>
       </Link>
-      <div className="p-2">
+      <div className="mt-2">
         {movie.name.length > 12 ? `${movie.name.slice(0, 12)}...` : movie.name}
       </div>
     </div>
