@@ -38,7 +38,7 @@ export default function RootLayout({
                 </Suspense>
               </div>
             </div>
-            <div className="flex-1 flex flex-col p-4">{children}</div>
+            <div className="flex-1 flex flex-col ">{children}</div>
           </div>
         </div>
         
