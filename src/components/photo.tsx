@@ -22,7 +22,7 @@ export function Photo({
   const imageUrl=  src && src !== "posterthatismissing.jpg" ? `${baseUrl}images/${src}` : '/p-missing.png';
   console.log(imageUrl)
   return (
-    <div className="relative aspect-[2/3] w-full overflow-hidden rounded-md bg-muted shadow-md">
+    <div className="relative aspect-[2/3] w-full overflow-hidden rounded-md bg-muted shadow-md mb-1">
       <Image
         alt=''
         src={imageUrl}
