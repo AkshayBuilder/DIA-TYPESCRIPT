@@ -34,12 +34,13 @@ const MovieLink = memo(function MovieLink({
           title={movie.name}
           priority={priority}
         />
-        <div>
+       
+      </Link>
+       <div>
         <span className="absolute bottom-0 left-0 text-sm font-semibold mt-2">
           {movie.name.length > 12 ? `${movie.name.slice(0, 12)}...` : movie.name}
         </span>
         </div>
-      </Link>
       
     </div>
   );
