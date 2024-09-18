@@ -23,7 +23,7 @@ export default async function Page()
     <div className="flex flex-col h-full">
     {/* LoadMore now contains the SearchComponent */}
     <div className="flex-grow overflow-auto min-h-[200px]">
-      <div className="group-has-[[data-pending]]:animate-pulse p-4">
+      <div className="group-has-[[data-pending]]:animate-pulse p-2">
         <Suspense fallback={<Loading/>}>
         <LoadMore initialMovies={data} />
         </Suspense>
