@@ -112,7 +112,7 @@ export function LoadMore({ initialMovies }: { initialMovies: Movie[] | null }) {
 
         {/* Spinner for pagination */}
         <div ref={ref}>
-          <Spinner />
+          {pagesLoade<4 && <Spinner />}
         </div>
       </div>
     
